@@ -1,0 +1,21 @@
+body{
+    background-color: black;
+}
+.main-contianer{
+    border-radius: 5px;
+}
+
+
+
+.form-container{
+    margin: 30px;
+}
+
+.Pre{
+    margin-top: 10%;
+
+}
+
+#sec-add{
+   width: 112px; 
+}

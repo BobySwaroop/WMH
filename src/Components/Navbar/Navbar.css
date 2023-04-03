@@ -1,0 +1,12 @@
+a img{
+    height: 95px;
+    
+}
+ul li a:hover{
+    background-color: #cd2122;
+    color: white!important;
+}
+.Home{
+    background-color: #cd2122;
+    color: white!important;
+}
