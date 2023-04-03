@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import Navbar from "../Navbar/Navbar";
+import { auth } from '../firebase-config';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 function SignIn() {
-
+const navigate = useNavigate();
     const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-}
+//   const handleEmailChange = (event) => {
+//     setEmail(event.target.value);
+// }
 
-const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-}
+// const handlePasswordChange = (event) => {
+//     setPassword(event.target.value);
+// }
 
-const handleSubmit = async (e) => {
+const handleSubmit =(e) => {
   e.preventDefault();
-  if (email && password ) {
-    // redirect to admin component
-    window.location.href = '/dashboard';
-}
+    signInWithEmailAndPassword(auth, email, password).then(value => {navigate("/dashboard");}).catch((err) => alert(err));
+
 };
 
 
@@ -45,8 +45,8 @@ const handleSubmit = async (e) => {
             <div className='col-10 mx-auto'>
                 <div className="row w-50 mx-auto">
                     <div className="col-md-12">
-                        <input className='form-control m-2' type="text" placeholder='Email' value={email} onChange={handleEmailChange}/>
-                        <input   className='form-control m-2' type="text" placeholder='Password' value={password} onChange={handlePasswordChange}/>
+                        <input className='form-control m-2' type="text" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input   className='form-control m-2' type="text" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                 </div>
                 <div className="row w-50 mx-auto">

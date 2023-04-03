@@ -1,35 +1,32 @@
 import React, { useState } from 'react';
 import Navbar from "../Navbar/Navbar";
-
-
+import { auth } from '../firebase-config';
+import { useNavigate} from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 function SignUp() {
    
-
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
 
 
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    }
+    // const handleEmailChange = (event) => {
+    //     setEmail(event.target.value);
+    // }
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    }
+    // const handlePasswordChange = (event) => {
+    //     setPassword(event.target.value);
+    // }
 
-    const handleConfirmPasswordChange = (event) => {
-        setConfirmPassword(event.target.value);
-    }
+    // const handleConfirmPasswordChange = (event) => {
+    //     setConfirmPassword(event.target.value);
+    // }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (email && password && password === confirmPassword) {
-            // redirect to admin component
-            window.location.href = '/admin';
-        }
+        createUserWithEmailAndPassword(auth, email, password).then(value => {navigate("/dashboard");});
     }
 
     return (
@@ -51,9 +48,8 @@ function SignUp() {
                             <div className='col-10 mx-auto'>
                                 <div className="row w-50 mx-auto">
                                     <div className="col-md-12">
-                                        <input className='form-control m-2' type="text" placeholder='Email' value={email} onChange={handleEmailChange} />
-                                        <input className='form-control m-2' type="password" placeholder='Password' value={password} onChange={handlePasswordChange} />
-                                        <input className='form-control m-2' type="password" placeholder='Confirm Password' value={confirmPassword} onChange={handleConfirmPasswordChange} />
+                                        <input className='form-control m-2' type="text" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                                        <input className='form-control m-2' type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
                                     </div>
                                 </div>
                                 <div className="row w-50 mx-auto">
