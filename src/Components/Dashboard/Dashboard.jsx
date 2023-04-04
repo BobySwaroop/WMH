@@ -45,7 +45,7 @@ function Dashboard() {
                     </div>
                     {/* Add button to trigger download */}
                     <button className='btn btn-danger m-2' onClick={halndleload}>
-                      Download
+                    Load Images
                     </button>
 
                   </form>

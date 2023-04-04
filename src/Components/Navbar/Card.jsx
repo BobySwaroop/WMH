@@ -13,6 +13,9 @@ const Card = (props) => {
         firebase.getImageURL(props.url).then((url) => setURL(url));
       }, []);
     
+      const handleDownloadClick = (url) => {
+        window.open(url, "_blank");
+      };
   return (
     <div className="card">
     <img src={url} className="card-img-top" alt="..."/>
@@ -21,7 +24,7 @@ const Card = (props) => {
       <p className="card-text"><span><b>Model:</b> </span>{props.model}</p>
       <p className="card-text"><span><b>Credit:</b> </span>{props.credit}</p>
       <p className="card-text"><span><b>Caption:</b> </span>{props.caption}</p>
-      <Link path="#" className="btn btn-primary">Download</Link>
+      <Link path="#" className="btn btn-primary" onClick={() => handleDownloadClick(url)}>Download</Link>
     </div>
   </div>
   );
