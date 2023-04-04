@@ -10,3 +10,7 @@ ul li a:hover{
     background-color: #cd2122;
     color: white!important;
 }
+.card{
+    width: 18rem;
+    margin: 25px;
+}

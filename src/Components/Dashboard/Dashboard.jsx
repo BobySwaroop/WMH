@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../Navbar/Navbar';
-
-
+import { useFirebase } from '../firebase-config';
+import Card from '../Navbar/Card';
 function Dashboard() {
+  const firebase = useFirebase();
+
+  const [users, setUsers] = useState([]);
+
+  const halndleload = (e) => {
+    e.preventDefault();
+    firebase.listAllUsers().then((users) => setUsers(users.docs));
+  }
   
-  
+
   return (
     <>
       <Navbar/>
@@ -36,7 +44,7 @@ function Dashboard() {
                       </select>
                     </div>
                     {/* Add button to trigger download */}
-                    <button className='btn btn-danger m-2' type='submit'>
+                    <button className='btn btn-danger m-2' onClick={halndleload}>
                       Download
                     </button>
 
@@ -45,6 +53,13 @@ function Dashboard() {
               </div>
             </div>
           </div>
+          <div className="container">
+          <div class="card-group">
+          {users.map((user) => (
+        <Card key={user.id} {...user.data()}/>
+        ))}
+      </div>
+      </div>
         </div>
       </div>
     </>

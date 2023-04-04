@@ -77,9 +77,6 @@ return (
             </div>
           </div>
           <p className="text-end me-4 m-2">Hello, {user.email}</p>
-          {/* <button className="btn btn-primary mt-2 d-inline m-2" onClick={() => signOut(auth)}>
-                Logout
-              </button> */}
               <Link to={"/"} className="btn btn-primary mt-2 d-inline m-2" onClick={() => signOut(auth)}>Logout</Link>
         </div>
       </nav>

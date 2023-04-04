@@ -11,19 +11,6 @@ function SignUp() {
   const [password, setPassword] = useState("");
 
 
-
-    // const handleEmailChange = (event) => {
-    //     setEmail(event.target.value);
-    // }
-
-    // const handlePasswordChange = (event) => {
-    //     setPassword(event.target.value);
-    // }
-
-    // const handleConfirmPasswordChange = (event) => {
-    //     setConfirmPassword(event.target.value);
-    // }
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         createUserWithEmailAndPassword(auth, email, password).then(value => {navigate("/dashboard");});

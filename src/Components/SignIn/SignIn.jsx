@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link , useNavigate} from 'react-router-dom';
+import { useFirebase } from '../firebase-config';
 import Navbar from "../Navbar/Navbar";
 import { auth } from '../firebase-config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 function SignIn() {
-const navigate = useNavigate();
-    const [email, setEmail] = useState("");
+  const firebase = useFirebase();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    if (firebase.isLoggedIn) {
+      // navigate to home
+      navigate("/dashboard");
+    }
+    
+  }, [firebase, navigate]);
 
-//   const handleEmailChange = (event) => {
-//     setEmail(event.target.value);
-// }
-
-// const handlePasswordChange = (event) => {
-//     setPassword(event.target.value);
-// }
 
 const handleSubmit =(e) => {
   e.preventDefault();
