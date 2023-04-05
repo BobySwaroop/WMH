@@ -1,11 +1,10 @@
 body{
     background-color: black;
 }
-.main-contianer{
+/* .main-contianer{
     border-radius: 5px;
-}
-
-
+    
+} */
 
 .form-container{
     margin: 30px;
@@ -19,3 +18,16 @@ body{
 #sec-add{
    width: 112px; 
 }
+@media screen and (min-width: 768px){
+    .main-contianer{
+        width: 100% !important;
+    }
+}
+
+@media screen and (min-width: 480px){
+    .main-contianer {
+      width: 100% !important;
+      
+    }
+  }
+  

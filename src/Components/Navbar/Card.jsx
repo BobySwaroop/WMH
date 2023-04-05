@@ -48,7 +48,7 @@ const Card = (props) => {
             <Link path="#" className="btn btn-danger m-2 float-end">
               Delete
             </Link>
-            <Link path="#" className="btn btn-success m-2 float-end">
+            <Link path="#" className="btn btn-success m-2 float-end" onClick={() => handleDownloadClick(props.url)}>
               Download
             </Link>
           </div>

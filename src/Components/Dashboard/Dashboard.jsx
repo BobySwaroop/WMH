@@ -6,10 +6,10 @@ function Dashboard() {
   const firebase = useFirebase();
 
   const [users, setUsers] = useState([]);
-
+const citiesRef =firebase.listAllUsers();
   const halndleload = (e) => {
     e.preventDefault();
-    firebase.listAllUsers().then((users) => setUsers(users.docs));
+  citiesRef.then((users) => setUsers(users.docs));
   }
   
 
@@ -53,7 +53,7 @@ function Dashboard() {
               </div>
             </div>
           </div>
-          <div class="card-group">
+          <div className="card-group">
           {users.map((user) => (
         <Card key={user.id} {...user.data()}/>
         ))}
