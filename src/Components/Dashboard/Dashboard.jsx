@@ -53,12 +53,10 @@ function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="container">
           <div class="card-group">
           {users.map((user) => (
         <Card key={user.id} {...user.data()}/>
         ))}
-      </div>
       </div>
         </div>
       </div>
