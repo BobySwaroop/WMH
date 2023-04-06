@@ -3,7 +3,7 @@ import Navbar from "../Navbar/Navbar";
 import { auth } from '../firebase-config';
 import { useNavigate} from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-
+import "../../App.css";
 function SignUp() {
    
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ function SignUp() {
         <>
             <Navbar />
             <>
-                <div className='container bg-dark w-75 main-contianer'>
+                <div className='container bg-dark'>
                     <div className='row Pre p-5'>
                         <div className='col-10 mx-auto'>
                             <div className='row text-center'>
@@ -30,16 +30,16 @@ function SignUp() {
                     </div>
                 </div>
                 <div>
-                    <div className='container bg-light w-75 main-contianer'>
+                    <div className='container bg-light '>
                         <div className='row p-5'>
                             <div className='col-10 mx-auto'>
-                                <div className="row w-50 mx-auto">
+                                <div className="row w-50 mx-auto" id="responsive">
                                     <div className="col-md-12">
                                         <input className='form-control m-2' type="text" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
                                         <input className='form-control m-2' type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
                                     </div>
                                 </div>
-                                <div className="row w-50 mx-auto">
+                                <div className="row w-50 mx-auto" id="responsive">
                                     <div className="col-md-12">
                                         <button className='btn btn-success w-100 m-2' onClick={handleSubmit}>Create Account</button>
                                     </div>

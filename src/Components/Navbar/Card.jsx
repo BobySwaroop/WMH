@@ -29,19 +29,19 @@ const Card = (props) => {
             </p>
             <p className="form-control m-2 deta">
               <span>
-                <b>Model:</b>{" "}
+                <b>Model:</b>
               </span>
               {props.model}
             </p>
             <p className="form-control m-2 deta">
               <span>
-                <b>Credit:</b>{" "}
+                <b>Credit:</b>
               </span>
               {props.credit}
             </p>
             <p className="form-control m-2 deta">
               <span>
-                <b>Caption:</b>{" "}
+                <b>Caption:</b>
               </span>
               {props.caption}
             </p>

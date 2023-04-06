@@ -127,14 +127,14 @@ function App() {
       <div className='container bg-dark w-75 main-contianer'>
         <div className='row Pre p-5'>
           <div className='col-10 mx-auto'>
-            <div className='row'>
-              <div className='col-5'>
+            <div className='row' id="responsives1">
+              <div className='col-5' id="responsives1">
               <input className='form-control' value={name} onChange={handleNameChange} required type="text" placeholder='Enter Your Name:' />
               </div>
-              <div className='col-5'>
+              <div className='col-5' id="responsives1">
               <input className='form-control' value={email} onChange={handleEmailChange} required type="text" placeholder='Enter Your Email:' />
               </div>
-              <div className='col-2'>
+              <div className='col-2' id="responsives2">
                 <input type="file" className='form-control btn-outline-danger w-75' multiple onChange={handleImageChange} />
               </div>
             </div>
