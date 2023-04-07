@@ -1,20 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import Navbar from '../Navbar/Navbar';
 import { useFirebase } from '../firebase-config';
-import Card from '../Navbar/Card';
+import { Link } from 'react-router-dom';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase-config';
+import { CSVLink } from 'react-csv';
+
+
+
+const headers = [
+  {label: 'Name', key: 'name'},
+  {label: 'Model', key: 'model'},
+  {label: 'Credit', key: 'credit'},
+  {label: 'Caption', key: 'caption'},
+  {label: 'Url', key: 'url'},
+]
+
+
 function Dashboard() {
   const firebase = useFirebase();
 
   const [users, setUsers] = useState([]);
-const citiesRef =firebase.listAllUsers();
   const halndleload = (e) => {
     e.preventDefault();
-  citiesRef.then((users) => setUsers(users.docs));
+    firebase.listAllUsers().then((users) => setUsers(users.docs));
   }
-  
 
-
-  
+  const handleDeleteClick = (id) => {
+    let deletedata = doc(db, "imageUploads" , id);
+    deleteDoc(deletedata).then(() => {
+      alert("delete");
+      window.location.reload(false);
+    })
+  }
 
   return (
     <>
@@ -58,7 +76,48 @@ const citiesRef =firebase.listAllUsers();
           </div>
           <div className="card-group">
           {users.map((user) => (
-        <Card key={user.id} {...user.data()}/>
+        // <Card key={user.id} {...user.data()}/>
+        <div key={user.id}  className="container bg-light w-75 main-contianer loadata mt-4">
+        <div className="row">
+          <div className="col-md-6">
+            <img className="img-thumbnail m-3" src={user.data().url} />
+          </div>
+          <div className="col-md-6 userdata">
+            <div className="">
+              <p className="form-control m-2 deta">
+                <b>Name: </b>
+                {user.data().name}
+              </p>
+              <p className="form-control m-2 deta">
+                <span>
+                  <b>Model:</b>{" "}
+                </span>
+                {user.data().caption}
+              </p>
+              <p className="form-control m-2 deta">
+                <span>
+                  <b>Credit:</b>
+                </span>
+                {user.data().credit}
+              </p>
+              <p className="form-control m-2 deta">
+                <span>
+                  <b>Caption:</b>
+                </span>
+                {user.data().model}
+              </p>
+              <Link path="#" className="btn btn-danger m-2 float-end" onClick={() => handleDeleteClick(user.id)}>
+                Delete
+              </Link>
+              <CSVLink data={users} headers={headers} filename='user_data.csv'>
+              <button className="btn btn-success m-2 float-end" >
+                Download
+              </button>
+              </CSVLink>
+            </div>
+          </div>
+        </div>
+      </div>
         ))}
       </div>
         </div>

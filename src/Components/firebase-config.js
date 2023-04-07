@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState} from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs, collection } from "@firebase/firestore";
-import { getStorage, getDownloadURL, ref } from "firebase/storage";
+import { getStorage } from "firebase/storage";
 import "firebase/storage";
 import {getAuth, onAuthStateChanged} from "firebase/auth";
 
@@ -36,13 +36,10 @@ export const FirebaseProvider = (props) => {
     return getDocs(collection(db, "imageUploads"));
   };
 
-  const getImageURL = (path) => {
-    return getDownloadURL(ref(storage, path));
-  };
 
     const isLoggedIn = user ? true : false;
 
-   return < FirebaseContext.Provider value={{listAllUsers, getImageURL, isLoggedIn}}>{props.children}</FirebaseContext.Provider>
+   return < FirebaseContext.Provider value={{listAllUsers, isLoggedIn}}>{props.children}</FirebaseContext.Provider>
   }
 
 const app = initializeApp(firebaseConfig);

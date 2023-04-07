@@ -138,7 +138,7 @@ function App() {
                 <input type="file" className='form-control btn-outline-danger w-75' multiple onChange={handleImageChange} />
               </div>
             </div>
-          </div>
+          </div>  
         </div>
       </div>
       <div>
