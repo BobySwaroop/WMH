@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../App.css";
+import "../Hero/Hero.css";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { storage, db } from "../firebase-config";
@@ -13,7 +14,7 @@ function App() {
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
-  
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -129,16 +130,16 @@ function App() {
           <div className='col-10 mx-auto'>
             <div className='row' id="responsives1">
               <div className='col-5' id="responsives1">
-              <input className='form-control' value={name} onChange={handleNameChange} required type="text" placeholder='Enter Your Name:' />
+                <input className='form-control' value={name} onChange={handleNameChange} required type="text" placeholder='Enter Your Name:' />
               </div>
               <div className='col-5' id="responsives1">
-              <input className='form-control' value={email} onChange={handleEmailChange} required type="text" placeholder='Enter Your Email:' />
+                <input className='form-control' value={email} onChange={handleEmailChange} required type="text" placeholder='Enter Your Email:' />
               </div>
               <div className='col-2' id="responsives2">
                 <input type="file" className='form-control btn-outline-danger w-75' multiple onChange={handleImageChange} />
               </div>
             </div>
-          </div>  
+          </div>
         </div>
       </div>
       <div>
@@ -146,31 +147,30 @@ function App() {
           <div className='row p-5'>
             <div className='col-10 mx-auto'>
               <div className='row mx-atuo img-form-container'>
-                  {imageUploads.length > 0 && (
-                    <div>
-                      <div className="previews">
-                        {imageUploads.map((image, index) => (
-                          <div key={index} className="preview">
-                            <img className="img-thumbnail m-3" src={image.preview} alt={image.file.name} />
-                            <div className="inputfields">
-                              <input className="form-control m-2" type="text" placeholder="Caption" value={image.caption} onChange={(event) => handleCaptionChange(event, index)}/>
-                              <input className="form-control m-2" type="text" placeholder="Credit" value={image.credit} onChange={(event) => handleCreditChange(event, index)} />
-                              <input className="form-control m-2" type="text" placeholder="Model" value={image.model} onChange={(event) => handleModelChange(event, index)}/>
-                              <button className="btn btn-danger m-2 float-end delete-btn" onClick={() => handleDeleteClick(index)}><i className="bi bi-trash"></i></button>
-                            </div>
+                {imageUploads.length > 0 && (
+                  <div>
+                    <div className="previews">
+                      {imageUploads.map((image, index) => (
+                        <div key={index} className="preview">
+                          <img className="img-thumbnail m-3" src={image.preview} alt={image.file.name} />
+                          <div className="inputfields">
+                            <input className="form-control m-2" type="text" placeholder="Caption" value={image.caption} onChange={(event) => handleCaptionChange(event, index)} />
+                            <input className="form-control m-2" type="text" placeholder="Credit" value={image.credit} onChange={(event) => handleCreditChange(event, index)} />
+                            <input className="form-control m-2" type="text" placeholder="Model" value={image.model} onChange={(event) => handleModelChange(event, index)} />
+                            <button className="btn btn-danger m-2 float-end delete-btn" onClick={() => handleDeleteClick(index)}><i className="bi bi-trash"></i></button>
                           </div>
-                        ))}
-                      </div>
-                      <button className="btn btn-success float-end w-100" onClick={handleUploadClick}>Upload</button>
+                        </div>
+                      ))}
                     </div>
-                  )}
-                  
+                    <button className="btn btn-success float-end w-100" onClick={handleUploadClick}>Upload</button>
+                  </div>
+                )}
               </div>
               {uploadSuccess && (
-                    <div>
-                      <h2 className="text-success text-center">Upload Successful!</h2>
-                    </div>
-                  )}
+                <div>
+                  <h2 className="text-success text-center">Upload Successful!</h2>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -1,33 +1,22 @@
-body{
-    background-color: black;
+@media (max-width: 480px) { 
+   .main-contianer{
+    width: 100% !important;
+   }
+   .preview img {
+    height: 146px;
+    width: 247px;
+    margin: 0px;
+    padding: 0.1rem;
+    margin: 13px !important;
 }
-/* .main-contianer{
-    border-radius: 5px;
+.form-control{
     
-} */
-
-.form-container{
-    margin: 30px;
+    width: 250px;
+}
+.delete-btn{
+    position: relative;
+    left: -152px;
+    top: -143px;
+}
 }
 
-.Pre{
-    margin-top: 10%;
-
-}
-
-#sec-add{
-   width: 112px; 
-}
-@media screen and (min-width: 768px){
-    .main-contianer{
-        width: 100% !important;
-    }
-}
-
-@media screen and (min-width: 480px){
-    .main-contianer {
-      width: 100% !important;
-      
-    }
-  }
-  

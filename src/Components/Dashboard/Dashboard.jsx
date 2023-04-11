@@ -1,42 +1,72 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import Navbar from '../Navbar/Navbar';
+import "./Dashboard.css";
 import { useFirebase } from '../firebase-config';
 import { Link } from 'react-router-dom';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import { CSVLink } from 'react-csv';
+import ReactPaginate from 'react-paginate';
 
-
-
-const headers = [
-  {label: 'Name', key: 'name'},
-  {label: 'Model', key: 'model'},
-  {label: 'Credit', key: 'credit'},
-  {label: 'Caption', key: 'caption'},
-  {label: 'Url', key: 'url'},
-]
 
 
 function Dashboard() {
+  const [selectedFilter, setSelectedFilter] = useState('All');
   const firebase = useFirebase();
-
-  const [users, setUsers] = useState([]);
-  const halndleload = (e) => {
+  const [searchTerm, setSearchTerm] = useState('');
+    const handleSearch = (e) => {
     e.preventDefault();
-    firebase.listAllUsers().then((users) => setUsers(users.docs));
+    firebase.listAllUsers().then((users) => {
+      const filteredUsers = users.docs.filter((user) => {
+        return user.data().name.toLowerCase().includes(searchTerm.toLowerCase()) || user.data().email.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+      setUsers(filteredUsers);
+    });
   }
 
+  const [users, setUsers] = useState([]);
+  // const halndleload = (e) => {
+  //   e.preventDefault();
+  //   firebase.listAllUsers().then((users) => setUsers(users.docs));
+  // }
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const usersPerPage = 8;
+
   const handleDeleteClick = (id) => {
-    let deletedata = doc(db, "imageUploads" , id);
+    let deletedata = doc(db, "imageUploads", id);
     deleteDoc(deletedata).then(() => {
       alert("delete");
       window.location.reload(false);
     })
   }
+  const headers = [
+    { label: 'Name', key: 'name' },
+    { label: 'Email', key: 'email' },
+    { label: 'Model', key: 'model' },
+    { label: 'Credit', key: 'credit' },
+    { label: 'Caption', key: 'caption' },
+    { label: 'Url', key: 'url' },
+
+  ]
+  const filteredUsers = users.filter((user) => {
+    if (selectedFilter === 'All') {
+      return true;
+    } else if (selectedFilter === 'last week') {
+      // Filter by date (example)
+      const lastWeek = new Date();
+      lastWeek.setDate(lastWeek.getDate() - 7);
+      const imageDate = new Date(user.data().createdAt);
+      return imageDate > lastWeek;
+    }
+  });
+
+  const offset = currentPage * usersPerPage;
+  const currentUsers = filteredUsers.slice(offset, offset + usersPerPage);
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className='container bg-dark w-75 main-contianer'>
         <div className='row Pre p-5'>
           <div className='col-10 mx-auto'>
@@ -51,74 +81,91 @@ function Dashboard() {
           <div className='row p-5'>
             <div className='col-10 mx-auto'>
               <div className='row w-50 mx-auto'>
-                <div className='col-md-12'>
-                  {/* Add a form with a select dropdown for filter options */}
+                <div className='col-md-12 d-linline'>
                   <form>
                     <div className='form-group'>
-                      <label htmlFor='filter'>Select filter:</label>
-                      <select className='form-control' id='filter'>
-                        <option value='today'>Today</option>
-                        <option value='yesterday'>Yesterday</option>
-                        <option value='last week'>Lastweek</option>
-                        <option value='All'>All</option>
-
-                      </select>
-                    </div>
-                    {/* Add button to trigger download */}
-                    <button className='btn btn-danger m-2' onClick={halndleload}>
-                    Load Images
+                    <input type="text" className='form-control' placeholder="Search by name or email" onChange={(e) => setSearchTerm(e.target.value)} />
+                    <button className='btn btn-danger mt-2' onClick={handleSearch}>
+                      Search
                     </button>
-
+                    </div>
+                    
                   </form>
                 </div>
               </div>
             </div>
           </div>
           <div className="card-group">
-          {users.map((user) => (
-        <div key={user.id}  className="container bg-light w-75 main-contianer loadata mt-4">
-        <div className="row">
-          <div className="col-md-6">
-            <img className="img-thumbnail m-3" src={user.data().url} />
+            {currentUsers.map((user) => (
+              <div key={user.id} className="container bg-light w-75 main-contianer loadata mt-4">
+                <div className="row">
+                  <div className="col-md-6 ">
+                    <div className='card-image-container'>
+                      <img className="img-thumbnail  card-image" src={user.data().url} alt='image-url' />
+                    </div>
+                  </div>
+                  <div className="col-md-6 userdata">
+                    <div className="">
+                      <p className="form-control mb-1 deta">
+                        <b>Name: </b>
+                        {user.data().name}
+                      </p>
+                      <p className="form-control mb-1 deta">
+                        <b>Email: </b>
+                        {user.data().email}
+                      </p>
+                      <p className="form-control  mb-1 deta">
+                        <span>
+                          <b>Model: </b>{" "}
+                        </span>
+                        {user.data().caption}
+                      </p>
+                      <p className="form-control mb-1 deta">
+                        <span>
+                          <b>Credit: </b>
+                        </span>
+                        {user.data().credit}
+                      </p>
+                      <p className="form-control mb-1 deta">
+                        <span>
+                          <b>Caption: </b>
+                        </span>
+                        {user.data().model}
+                      </p>
+                      <Link path="#" className="btn btn-danger m-2 float-end" onClick={() => handleDeleteClick(user.id)}>
+                        Delete
+                      </Link>
+                      <CSVLink data={filteredUsers.map(user => ({
+                        name: user.data().name,
+                        email: user.data().email,
+                        model: user.data().model,
+                        credit: user.data().credit,
+                        caption: user.data().caption,
+                        url: user.data().url
+                      }))} headers={headers} filename='user_data.csv'>
+                        <button className="btn btn-success m-2 float-end">Download</button>
+                      </CSVLink>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="col-md-6 userdata">
-            <div className="">
-              <p className="form-control m-2 deta">
-                <b>Name: </b>
-                {user.data().name}
-              </p>
-              <p className="form-control m-2 deta">
-                <span>
-                  <b>Model:</b>{" "}
-                </span>
-                {user.data().caption}
-              </p>
-              <p className="form-control m-2 deta">
-                <span>
-                  <b>Credit:</b>
-                </span>
-                {user.data().credit}
-              </p>
-              <p className="form-control m-2 deta">
-                <span>
-                  <b>Caption:</b>
-                </span>
-                {user.data().model}
-              </p>
-              <Link path="#" className="btn btn-danger m-2 float-end" onClick={() => handleDeleteClick(user.id)}>
-                Delete
-              </Link>
-              <CSVLink data={users} headers={headers} filename='user_data.csv'>
-              <button className="btn btn-success m-2 float-end" >
-                Download
-              </button>
-              </CSVLink>
-            </div>
-          </div>
-        </div>
-      </div>
-        ))}
-      </div>
+          <ReactPaginate
+            previousLabel={<i className="bi bi-arrow-left-circle-fill m-2"></i>}
+            nextLabel={<i className="bi bi-arrow-right-circle-fill m-2"></i>}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={Math.ceil(filteredUsers.length / usersPerPage)}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={(data) => setCurrentPage(data.selected)}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+            previousClassName={'paginate-prev'}
+            nextClassName={'paginate-next'}
+          />
         </div>
       </div>
     </>
@@ -126,3 +173,94 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+
+
+
+// import React, { useState } from 'react';
+// import Navbar from '../Navbar/Navbar';
+// import "./Dashboard.css";
+// import { useFirebase } from '../firebase-config';
+// import { Link } from 'react-router-dom';
+// import { deleteDoc, doc } from 'firebase/firestore';
+// import { db } from '../firebase-config';
+// import { CSVLink } from 'react-csv';
+// import ReactPaginate from 'react-paginate';
+
+
+
+// function Dashboard() {
+//   const firebase = useFirebase();
+
+//   const [users, setUsers] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState('');
+
+//   const handleSearch = (e) => {
+//     e.preventDefault();
+//     firebase.listAllUsers().then((users) => {
+//       const filteredUsers = users.docs.filter((user) => {
+//         return user.data().name.toLowerCase().includes(searchTerm.toLowerCase()) || user.data().email.toLowerCase().includes(searchTerm.toLowerCase());
+//       });
+//       setUsers(filteredUsers);
+//     });
+//   }
+
+//   const [currentPage, setCurrentPage] = useState(0);
+//   const usersPerPage = 8;
+
+//   const handleDeleteClick = (id) => {
+//     let deletedata = doc(db, "users", id)
+//     deleteDoc(deletedata)
+//     alert('User has been deleted successfully');
+//     firebase.listAllUsers().then((users) => {
+//       setUsers(users.docs);
+//     });
+//   }
+
+//   const handlePageClick = ({ selected: selectedPage }) => {
+//     setCurrentPage(selectedPage);
+//   };
+
+//   const offset = currentPage * usersPerPage;
+
+//   const pageCount = Math.ceil(users.length / usersPerPage);
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <div className="dashboard-container">
+//         <h1 className="dashboard-heading">User Dashboard</h1>
+//         <form onSubmit={handleSearch}>
+//           <input type="text" placeholder="Search by name or email" onChange={(e) => setSearchTerm(e.target.value)} />
+//           <button type="submit">Search</button>
+//         </form>
+//         <CSVLink className="download-link" data={users} filename={"users.csv"}>Download CSV</CSVLink>
+//         <div className="users-container">
+//           {users.slice(offset, offset + usersPerPage).map((user) => (
+//             <div key={user.id} className="user">
+//               <img src={user.data().photoURL} alt="user" />
+//               <Link to={`/users/${user.id}`}>
+//                 <h2>{user.data().name}</h2>
+//               </Link>
+//               <p>{user.data().email}</p>
+//               <button onClick={() => handleDeleteClick(user.id)}>Delete</button>
+//             </div>
+//           ))}
+//         </div>
+//         <ReactPaginate
+//           previousLabel={"Previous"}
+//           nextLabel={"Next"}
+//           pageCount={pageCount}
+//           onPageChange={handlePageClick}
+//           containerClassName={"pagination"}
+//           previousLinkClassName={"previous-page"}
+//           nextLinkClassName={"next-page"}
+//           disabledClassName={"pagination-disabled"}
+//           activeClassName={"pagination-active"}
+//         />
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Dashboard;
