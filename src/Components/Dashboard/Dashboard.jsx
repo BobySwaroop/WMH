@@ -31,12 +31,11 @@ function Dashboard() {
   // }
 
   const [currentPage, setCurrentPage] = useState(0);
-  const usersPerPage = 8;
+  const usersPerPage = 4;
 
-  const handleDeleteClick = (id) => {
+  const handleDeleteClick = (id,e) => {
     let deletedata = doc(db, "imageUploads", id);
     deleteDoc(deletedata).then(() => {
-      alert("delete");
       window.location.reload(false);
     })
   }
@@ -136,6 +135,7 @@ function Dashboard() {
                         Delete
                       </Link>
                       <CSVLink data={filteredUsers.map(user => ({
+                        
                         name: user.data().name,
                         email: user.data().email,
                         model: user.data().model,
@@ -150,6 +150,7 @@ function Dashboard() {
 
                 </div>
               </div>
+           
             ))}
           </div>
           <ReactPaginate
@@ -177,90 +178,4 @@ export default Dashboard;
 
 
 
-// import React, { useState } from 'react';
-// import Navbar from '../Navbar/Navbar';
-// import "./Dashboard.css";
-// import { useFirebase } from '../firebase-config';
-// import { Link } from 'react-router-dom';
-// import { deleteDoc, doc } from 'firebase/firestore';
-// import { db } from '../firebase-config';
-// import { CSVLink } from 'react-csv';
-// import ReactPaginate from 'react-paginate';
 
-
-
-// function Dashboard() {
-//   const firebase = useFirebase();
-
-//   const [users, setUsers] = useState([]);
-//   const [searchTerm, setSearchTerm] = useState('');
-
-//   const handleSearch = (e) => {
-//     e.preventDefault();
-//     firebase.listAllUsers().then((users) => {
-//       const filteredUsers = users.docs.filter((user) => {
-//         return user.data().name.toLowerCase().includes(searchTerm.toLowerCase()) || user.data().email.toLowerCase().includes(searchTerm.toLowerCase());
-//       });
-//       setUsers(filteredUsers);
-//     });
-//   }
-
-//   const [currentPage, setCurrentPage] = useState(0);
-//   const usersPerPage = 8;
-
-//   const handleDeleteClick = (id) => {
-//     let deletedata = doc(db, "users", id)
-//     deleteDoc(deletedata)
-//     alert('User has been deleted successfully');
-//     firebase.listAllUsers().then((users) => {
-//       setUsers(users.docs);
-//     });
-//   }
-
-//   const handlePageClick = ({ selected: selectedPage }) => {
-//     setCurrentPage(selectedPage);
-//   };
-
-//   const offset = currentPage * usersPerPage;
-
-//   const pageCount = Math.ceil(users.length / usersPerPage);
-
-//   return (
-//     <div>
-//       <Navbar />
-//       <div className="dashboard-container">
-//         <h1 className="dashboard-heading">User Dashboard</h1>
-//         <form onSubmit={handleSearch}>
-//           <input type="text" placeholder="Search by name or email" onChange={(e) => setSearchTerm(e.target.value)} />
-//           <button type="submit">Search</button>
-//         </form>
-//         <CSVLink className="download-link" data={users} filename={"users.csv"}>Download CSV</CSVLink>
-//         <div className="users-container">
-//           {users.slice(offset, offset + usersPerPage).map((user) => (
-//             <div key={user.id} className="user">
-//               <img src={user.data().photoURL} alt="user" />
-//               <Link to={`/users/${user.id}`}>
-//                 <h2>{user.data().name}</h2>
-//               </Link>
-//               <p>{user.data().email}</p>
-//               <button onClick={() => handleDeleteClick(user.id)}>Delete</button>
-//             </div>
-//           ))}
-//         </div>
-//         <ReactPaginate
-//           previousLabel={"Previous"}
-//           nextLabel={"Next"}
-//           pageCount={pageCount}
-//           onPageChange={handlePageClick}
-//           containerClassName={"pagination"}
-//           previousLinkClassName={"previous-page"}
-//           nextLinkClassName={"next-page"}
-//           disabledClassName={"pagination-disabled"}
-//           activeClassName={"pagination-active"}
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Dashboard;

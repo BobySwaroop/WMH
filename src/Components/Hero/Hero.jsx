@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../../App.css";
 import "../Hero/Hero.css";
+import emailjs from '@emailjs/browser';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { storage, db } from "../firebase-config";
 
 function App() {
+  const form = useRef();
   const [imageUploads, setImageUploads] = useState([]);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [name, setName] = useState("");
@@ -68,6 +70,16 @@ function App() {
 
 
   const handleUploadClick = () => {
+
+    emailjs.sendForm('service_us5ym9h', 'template_h1u66ie', form.current, 'oYkFvry-qBnIFFcph')
+      .then((result) => {
+          console.log(result.text);
+          console.log("email has been sent");
+      }, (error) => {
+          console.log(error.text);
+      });
+
+
     if (!name || !email) {
       alert("Please fill name and email before uploading.");
       return;
@@ -128,17 +140,19 @@ function App() {
       <div className='container bg-dark w-75 main-contianer'>
         <div className='row Pre p-5'>
           <div className='col-10 mx-auto'>
+          <form ref={form}>
             <div className='row' id="responsives1">
               <div className='col-5' id="responsives1">
-                <input className='form-control' value={name} onChange={handleNameChange} required type="text" placeholder='Enter Your Name:' />
+                <input className='form-control' value={name} name="user_name" onChange={handleNameChange} required type="text" placeholder='Enter Your Name:' />
               </div>
               <div className='col-5' id="responsives1">
-                <input className='form-control' value={email} onChange={handleEmailChange} required type="text" placeholder='Enter Your Email:' />
+                <input className='form-control' value={email} name="user_email" onChange={handleEmailChange} required type="text" placeholder='Enter Your Email:' />
               </div>
               <div className='col-2' id="responsives2">
                 <input type="file" className='form-control btn-outline-danger w-75' multiple onChange={handleImageChange} />
               </div>
             </div>
+            </form>
           </div>
         </div>
       </div>
@@ -146,7 +160,7 @@ function App() {
         <div className='container bg-light w-75 main-contianer'>
           <div className='row p-5'>
             <div className='col-10 mx-auto'>
-              <div className='row mx-atuo img-form-container'>
+              <div className='row img-form-container ' id="formji">
                 {imageUploads.length > 0 && (
                   <div>
                     <div className="previews">
@@ -162,7 +176,7 @@ function App() {
                         </div>
                       ))}
                     </div>
-                    <button className="btn btn-success float-end w-100" onClick={handleUploadClick}>Upload</button>
+                    <button className="btn btn-success float-end w-100"  type="submit" onClick={handleUploadClick}>Upload</button>
                   </div>
                 )}
               </div>
