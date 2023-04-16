@@ -3,14 +3,25 @@ import Navbar from '../Navbar/Navbar';
 import "./Dashboard.css";
 import { useFirebase } from '../firebase-config';
 import { Link } from 'react-router-dom';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import { CSVLink } from 'react-csv';
 import ReactPaginate from 'react-paginate';
+// import other module
+import {json2csv} from 'json-2-csv';
 
+import { saveAs } from 'file-saver';
 
 
 function Dashboard() {
+  var setUserData = useState([]);
+  var usedata = (getUserData) => {
+   
+    // [setUserData, getUserData ]= useState([]);
+    setUserData = [{...getUserData}];
+    
+  }
+   
   const [selectedFilter, setSelectedFilter] = useState('All');
   const firebase = useFirebase();
   const [searchTerm, setSearchTerm] = useState('');
@@ -48,6 +59,8 @@ function Dashboard() {
     { label: 'Url', key: 'url' },
 
   ]
+  
+
   const filteredUsers = users.filter((user) => {
     if (selectedFilter === 'All') {
       return true;
@@ -62,6 +75,66 @@ function Dashboard() {
 
   const offset = currentPage * usersPerPage;
   const currentUsers = filteredUsers.slice(offset, offset + usersPerPage);
+
+// download the single user data
+const handleDownloadClick = async (id) => {
+  const docRef = doc(db, "imageUploads", id);
+const docSnap = await getDoc(docRef); 
+var userData =[{
+  name:docSnap.data().name,
+  email:docSnap.data().email,
+  model:docSnap.data().model,
+  credit:docSnap.data().credit,
+  caption:docSnap.data().caption,
+  url:docSnap.data().url,
+}]
+const csvData = JSON.stringify(userData);
+
+
+const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+    saveAs(blob, 'user_data.csv');
+console.log(csvData);
+// other method
+const dataset = [
+  { label: 'Name', key: docSnap.data().name },
+  { label: 'Email', key: docSnap.data().email },
+  { label: 'Model', key: docSnap.data().model },
+  { label: 'Credit', key: docSnap.data().credit },
+  { label: 'Caption', key: docSnap.data().caption },
+  { label: 'Url', key: docSnap.data().url },
+
+]
+// other method end
+console.log(dataset);
+console.log(docSnap.data()); 
+// var getUserData = ({...userData});
+var getUserData = [{...dataset}];
+getUserData =[...dataset];
+// getUserData(userData);
+// usedata = [...getUserData];
+usedata(getUserData);
+console.log(getUserData); 
+
+// var setUserData
+console.log(setUserData);
+}
+// pagination page all data
+const  downloadDataAsCSV = async (pageNumber, pageSize) =>{
+  const allData = doc(db, "imageUploads").orderByKey().startAt(pageNumber.toString()).limitToFirst(pageSize);
+  const docSnap = await getDoc(allData); 
+var userData =[{
+  name:docSnap.data().name,
+  email:docSnap.data().email,
+  model:docSnap.data().model,
+  credit:docSnap.data().credit,
+  caption:docSnap.data().caption,
+  url:docSnap.data().url,
+}]
+const allcsvdata = JSON.stringify(userData);
+const blob = new Blob([allcsvdata], { type: 'text/csv;charset=utf-8' });
+saveAs(blob, `data_page_${pageNumber}_size_${pageSize}.csv`);
+}
+
 
   return (
     <>
@@ -130,7 +203,7 @@ function Dashboard() {
                           <b>Caption: </b>
                         </span>
                         {user.data().model}
-                      </p>
+                      </p>  
                       <Link path="#" className="btn btn-danger m-2 float-end" onClick={() => handleDeleteClick(user.id)}>
                         Delete
                       </Link>
@@ -145,10 +218,14 @@ function Dashboard() {
                       }))} headers={headers} filename='user_data.csv'>
                         <button className="btn btn-success m-2 float-end">Download</button>
                       </CSVLink>
+                      <CSVLink data ={JSON.stringify(setUserData)}  filename='single_user_data.csv'>
+                      <button className="btn btn-success m-2 float-end" onClick={() => handleDownloadClick(user.id)}>Download Single User</button>
+                      </CSVLink>
                     </div>
                   </div>
 
                 </div>
+                <button onClick={() => downloadDataAsCSV(1,4)}>Download All Data</button>
               </div>
            
             ))}
