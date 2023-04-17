@@ -8,9 +8,9 @@ import { db } from '../firebase-config';
 import { CSVLink } from 'react-csv';
 import ReactPaginate from 'react-paginate';
 // import other module
-import {json2csv} from 'json-2-csv';
+// import {json2csv} from 'json-2-csv';
 
-import { saveAs } from 'file-saver';
+// import { saveAs } from 'file-saver';
 
 
 function Dashboard() {
@@ -88,12 +88,12 @@ var userData =[{
   caption:docSnap.data().caption,
   url:docSnap.data().url,
 }]
-const csvData = JSON.stringify(userData);
+// const csvData = JSON.stringify(userData);
 
 
-const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
-    saveAs(blob, 'user_data.csv');
-console.log(csvData);
+// const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+//     saveAs(blob, 'user_data.csv');
+// console.log(csvData);
 // other method
 const dataset = [
   { label: 'Name', key: docSnap.data().name },
@@ -119,21 +119,21 @@ console.log(getUserData);
 console.log(setUserData);
 }
 // pagination page all data
-const  downloadDataAsCSV = async (pageNumber, pageSize) =>{
-  const allData = doc(db, "imageUploads").orderByKey().startAt(pageNumber.toString()).limitToFirst(pageSize);
-  const docSnap = await getDoc(allData); 
-var userData =[{
-  name:docSnap.data().name,
-  email:docSnap.data().email,
-  model:docSnap.data().model,
-  credit:docSnap.data().credit,
-  caption:docSnap.data().caption,
-  url:docSnap.data().url,
-}]
-const allcsvdata = JSON.stringify(userData);
-const blob = new Blob([allcsvdata], { type: 'text/csv;charset=utf-8' });
-saveAs(blob, `data_page_${pageNumber}_size_${pageSize}.csv`);
-}
+// const  downloadDataAsCSV = async (pageNumber, pageSize) =>{
+//   const allData = doc(db, "imageUploads").orderByKey().startAt(pageNumber.toString()).limitToFirst(pageSize);
+//   const docSnap = await getDoc(allData); 
+// var userData =[{
+//   name:docSnap.data().name,
+//   email:docSnap.data().email,
+//   model:docSnap.data().model,
+//   credit:docSnap.data().credit,
+//   caption:docSnap.data().caption,
+//   url:docSnap.data().url,
+// }]
+// const allcsvdata = JSON.stringify(userData);
+// const blob = new Blob([allcsvdata], { type: 'text/csv;charset=utf-8' });
+// saveAs(blob, `data_page_${pageNumber}_size_${pageSize}.csv`);
+// }
 
 
   return (
@@ -218,14 +218,14 @@ saveAs(blob, `data_page_${pageNumber}_size_${pageSize}.csv`);
                       }))} headers={headers} filename='user_data.csv'>
                         <button className="btn btn-success m-2 float-end">Download</button>
                       </CSVLink>
-                      <CSVLink data ={JSON.stringify(setUserData)}  filename='single_user_data.csv'>
+                      {/* <CSVLink data ={JSON.stringify(setUserData)}  filename='single_user_data.csv'> */}
                       <button className="btn btn-success m-2 float-end" onClick={() => handleDownloadClick(user.id)}>Download Single User</button>
-                      </CSVLink>
+                      {/* </CSVLink> */}
                     </div>
                   </div>
 
                 </div>
-                <button onClick={() => downloadDataAsCSV(1,4)}>Download All Data</button>
+                {/* <button onClick={() => downloadDataAsCSV(1,4)}>Download All Data</button> */}
               </div>
            
             ))}

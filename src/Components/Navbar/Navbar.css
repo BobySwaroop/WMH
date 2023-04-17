@@ -1,5 +1,6 @@
 a img{
-    height: 95px;
+    height: 75px;
+    margin-left: 90%;
     
 }
 ul li a:hover{
@@ -28,4 +29,7 @@ img {
 
 .container {
   padding: 15px 15px;
+}
+.nav{
+  height: 100px !important;
 }

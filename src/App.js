@@ -6,7 +6,7 @@ import Home from './Components/Home/Home';
 import SignIn from './Components/SignIn/SignIn';
 import SignUp from './Components/SignIn/SignUp';
 import Protected from './Components/Protected';
-
+import Footer from './Components/Footer/Footer';
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
     </Routes>
     </FirebaseProvider>
     </Router>
+    <Footer />
     </>
   );
 }

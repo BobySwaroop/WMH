@@ -22,30 +22,35 @@ useEffect(() => {
 if (user === null){
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light nav">
         <div className="container-fluid">
-          <Link to={"/"} className="navbar-brand" >
+          <div className='col-md-4'>
+          <Link to={"/"} className="navbar-brand">
             <img src={logo} alt="logo" />
           </Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          </div>
+         
+        </div>
+        <div className='col-md-8'>
+          <div className="collapse navbar-collapse bg-dark p-4" id="navbarNavAltMarkup">
             <div className="navbar-nav">
               <ul className='navbar-nav'>
                 <li className='"nav-item'>
                   <Link to={"/"} className='nav-link m-2 Home'>Home</Link>
                 </li>
                 <li className='"nav-item'>
-                  <Link to={"/"}  className='nav-link m-2'>Digital</Link>
+                  <Link to={"/"}  className='nav-link m-2  text-white'>Digital</Link>
                 </li>
                 <li className='"nav-item'>
-                  <Link to={"/"} className='nav-link m-2'>Contact Us</Link>
+                  <Link to={"/"} className='nav-link m-2  text-white'>Contact Us</Link>
                 </li>
               </ul>
             </div>
           </div>
-        </div>
+          </div>
       </nav>
     </>
   );
@@ -55,30 +60,43 @@ return (
   <div className='App'>
   <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
+          <div className='col-md-4'>
           <Link to={"/"} className="navbar-brand" >
             <img src={logo} alt="logo" />
           </Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          </div>
+         
+        </div>
+        <div className='col-md-8'>
+          <div className='row'>
+            <div className='col-md-8'>
+          <div className="collapse navbar-collapse bg-dark p-3" id="navbarNavAltMarkup">
             <div className="navbar-nav">
               <ul className='navbar-nav'>
                 <li className='"nav-item'>
                   <Link to={"/"} className='nav-link m-2 Home'>Home</Link>
                 </li>
                 <li className='"nav-item'>
-                  <Link to={"/"}  className='nav-link m-2'>Digital</Link>
+                  <Link to={"/"}  className='nav-link m-2 text-white'>Digital</Link>
                 </li>
                 <li className='"nav-item'>
-                  <Link to={"/"} className='nav-link m-2'>Contact Us</Link>
+                  <Link to={"/"} className='nav-link m-2 text-white'>Contact Us</Link>
                 </li>
               </ul>
             </div>
           </div>
-          <p className="text-end me-4 m-2">Hello, {user.email}</p>
-              <Link to={"/"} className="btn btn-primary mt-2 d-inline m-2" onClick={() => signOut(auth)}>Logout</Link>
-        </div>
+          </div>
+          <div className='col-md-4 bg-dark p-3'>
+            <div className='row'>
+        <div className='col-md-8'><p className="text-end me-4 m-2 text-white">Hello, {user.email}</p></div> 
+           <div className='col-md-4'><Link to={"/"} className="btn btn-primary mt-2 d-inline m-2" onClick={() => signOut(auth)}>Logout</Link></div>
+              </div>
+              </div>
+              </div>
+              </div>
       </nav>
   </div>
 )
